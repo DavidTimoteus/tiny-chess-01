@@ -46,15 +46,15 @@ def y():
 def M(m):
  global TN,CR,EP,e,K_
  a=m&127;t=(m>>7)&127;pr=(m>>14)&7;p=A[a];s=TN
- cs=t-16*s*(abs(p)==1 and t==EP and A[t]==0);cap=A[cs]
+ cs=t-16*s*(p*p==1 and t==EP and A[t]==0);cap=A[cs]
  j.append((m,cap,cs,CR,EP,e,list(K_)));A[a]=0
  if cap:e-=w(cap,cs);A[cs]=0
  np=pr*s if pr else p;e+=w(np,t)-w(p,a);A[t]=np
- if abs(p)==6:
+ if p*p==36:
   K_[s>0]=t
-  if abs(t-a)==2:
+  if(t-a)**2==4:
    rf,rt=(t+1,t-1) if t>a else (t-2,t+1);r=A[rf];A[rf]=0;A[rt]=r
- CR&=R.get(a,15)&R.get(t,15);EP=(a+t)//2 if abs(p)==1 and abs(t-a)==32 else -1;TN=-s
+ CR&=R.get(a,15)&R.get(t,15);EP=(a+t)//2 if p*p==1 and abs(t-a)==32 else -1;TN=-s
  if x(K_[s>0],TN):U();return 0
  return 1
 def U():
@@ -63,7 +63,7 @@ def U():
  if pr:v=v//abs(v)
  A[a]=v;A[t]=0
  if cap:A[cs]=cap
- if abs(v)==6 and abs(t-a)==2:
+ if v*v==36 and(t-a)**2==4:
   rf,rt=(t+1,t-1) if t>a else (t-2,t+1);A[rf]=A[rt];A[rt]=0
  TN=-TN
 def O(L):
@@ -72,7 +72,7 @@ def s(d,a,b,c):
  global k,l
  if c>=63:return e*TN
  k+=1
- if k>=60000:l=1;return 0
+ if k>=40000:l=1;return 0
  C=x(K_[TN>0],-TN);d+=C
  if d<=0:
   v=e*TN
@@ -92,14 +92,16 @@ def s(d,a,b,c):
  return a if d<=0 else v1
 def t(L=None):
  global k,l
- G1=[m for m in y() if M(m) and (U() or 1)] if L is None else [v(H) for H in L]
- if not G1:return ''
+ G1=[m for m in y()if M(m)and(U()or 1)]if L is None else[v(H)for H in L]
+ if not G1:return''
  k=0;l=0;B1=G1[0];B2=-MT
- for m in O(G1):
-  if not M(m):continue
-  S2=-s(2,-MT,-B2,1);U()
+ for Z in 2,3:
+  for m in O(G1):
+   if not M(m):continue
+   S2=-s(Z,-MT,-B2,1);U()
+   if l:break
+   if S2>B2:B2,B1=S2,m
   if l:break
-  if S2>B2:B2,B1=S2,m
  return u(B1)
 def u(m):
  a=m&127;t=(m>>7)&127;r=(m>>14)&7
@@ -114,7 +116,7 @@ def Y():
  for q,p in enumerate(A):
   if p:
    e+=w(p,q)
-   if abs(p)==6:K_[p>0]=q
+   if p*p==36:K_[p>0]=q
 if __name__=='__main__':
  url=os.environ['MAKEFUN_ENV_URL'].rstrip('/')
  while 1:
